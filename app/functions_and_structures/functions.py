@@ -1,6 +1,6 @@
 from queue import PriorityQueue
-from main.functions_and_structures.Position import *
-from main.functions_and_structures.Node import *
+from app.functions_and_structures.Position import *
+from app.functions_and_structures.Node import *
 
 
 def make_grid(width=10, height=10):

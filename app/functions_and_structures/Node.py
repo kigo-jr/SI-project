@@ -1,4 +1,4 @@
-from main.functions_and_structures.Position import Position
+from app.functions_and_structures.Position import Position
 
 
 class Node:
