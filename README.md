@@ -6,12 +6,16 @@
 ## Wymagane zależności
 - pygame
 
-\
-To run this project under linux run the following command
+instalowanie zależności
+```
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+uruchamianie projektu
 ```
 python3 app
-````
-
+```
 
 ## Wybrane algorytmy
 - A*
