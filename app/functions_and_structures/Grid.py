@@ -1,4 +1,3 @@
-
 from app.functions_and_structures.Position import *
 from app.functions_and_structures.Node import *
 
