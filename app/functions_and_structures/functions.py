@@ -26,8 +26,8 @@ def a_star(grid, start, end):
     open_set_hash = {start}
 
     while not open_set.empty():
-        current = open_set.get()[2] #  get usuwa i zwraca krotkę ()
-        open_set_hash.remove(current) #  
+        current = open_set.get()[2]  # get usuwa i zwraca krotkę ()
+        open_set_hash.remove(current)  #
         if current == end:
             pass
 
@@ -35,10 +35,12 @@ def a_star(grid, start, end):
             pass
         pass
 
-def h(start: Node=None, end: Node=None) -> int:
+
+def h(start: Node = None, end: Node = None) -> int:
     if start and end:
         return abs(start.position.x - end.position.x) + abs(start.position.y + end.position.y)
     return None
 
-def g(start: Node=None, end: Node=None):
+
+def g(start: Node = None, end: Node = None):
     pass
