@@ -1,3 +1,4 @@
-# Main naszego projektu
-# Tutaj trafia kod który będzie się wykonywał
-print("HELLO")
+
+
+if __name__ == "__main__":
+    print("HELLO")
