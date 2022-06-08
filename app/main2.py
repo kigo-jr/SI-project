@@ -3,7 +3,7 @@ from queue import PriorityQueue
 
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-pygame.display.set_caption("A* path finding")
+pygame.display.set_caption("Search algorithm visualization")
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -25,7 +25,7 @@ class Spot:
         self.x = row * width
         self.y = col * width
         self.color = WHITE
-        self.neighbours = []
+        self.neighbours = []  # FIXME same as function update_neighbours
         self.width = width
         self.total_rows = total_rows
 
@@ -71,6 +71,7 @@ class Spot:
     def draw(self, win):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
+    # FIXME I think this function should be in A_star.py
     def update_neighbours(self, grid):
         self.neighbours = []
         if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier():  # DOWN
@@ -118,6 +119,7 @@ def reconstruct_path(came_from, current, draw, start, end):
         draw()
 
 
+# TODO in this function we need to specify which algorithm we want to use
 def algorithm(draw, grid, start, end):
     count = 0
     open_set = PriorityQueue()
@@ -207,7 +209,7 @@ def get_clicked_position(pos, rows, width):
 
 
 def main(win, width):
-    ROWS = 60
+    ROWS = 60  # FIXME We can click outside of the grid and it causes program to close
     grid = make_grid(ROWS, width)
 
     start = None
@@ -225,6 +227,8 @@ def main(win, width):
             if started:
                 continue
 
+            # TODO think about changing how we handle mouse input
+            # - Click with the same button which placed it, on the start spot to remove it.
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_position(pos, ROWS, width)
