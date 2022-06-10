@@ -1,5 +1,5 @@
 from queue import PriorityQueue
-from app.functions_and_structures.Node import *
+from app.functions_and_structures.node import *
 
 
 def a_star(grid, start, end):

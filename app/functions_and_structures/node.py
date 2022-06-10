@@ -1,4 +1,4 @@
-from app.functions_and_structures.Position import Position
+from functions_and_structures import Position
 
 
 class Node:
@@ -10,12 +10,12 @@ class Node:
     def __init__(self, position: Position = None):
         self._position = position
 
-        self._g = 0
-        self._h = 0
-        self._f = 0
+        self.g = 0
+        self.h = 0
+        self.f = 0
 
-        self._traversable = True
-        self._neighbours = []
+        self.traversable = True
+        self.neighbours = []
 
     def __eq__(self, __o: object) -> bool:
         if type(self) == type(__o):
@@ -24,19 +24,19 @@ class Node:
 
     @property
     def g(self):
-        return self._g
+        return self.__g
 
     @g.setter
     def g(self, g):
-        self._g = g
+        self.__g = g
 
     @property
     def h(self):
-        return self._h
+        return self.__h
 
     @h.setter
     def h(self, h):
-        self._h = h
+        self.__h = h
 
     @property
     def f(self):
@@ -44,7 +44,7 @@ class Node:
 
     @f.setter
     def f(self, f):
-        self._f = f
+        self.__f = f
 
     @property
     def position(self):
@@ -56,19 +56,25 @@ class Node:
 
     @property
     def traversable(self):
-        return self._traversable
+        return self.__traversable
 
     @traversable.setter
     def traversable(self, traversable: bool = True):
-        self._traversable = traversable
+        self.__traversable = traversable
 
     @property
     def neighbours(self):
-        return self._neighbours
+        return self.__neighbours
 
     @neighbours.setter
     def neighbours(self, neighbours):
-        self._neighbours = neighbours
+        self.__neighbours = neighbours
+
+    def __str__(self) -> str:
+        return f"Node({self.position.x}, {self.position.y})"
+
+    def __repr__(self) -> str:
+        return f"Node(Position({self.position.x}, {self.position.y}))"
 
     def init_neighbours(self, grid):
         self.neigbours = []
