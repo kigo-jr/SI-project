@@ -1,5 +1,6 @@
 from typing import List
-from functions_and_structures import Position, Node
+from app.functions_and_structures.position import Position
+from app.functions_and_structures.node import Node
 
 class Grid:
 
