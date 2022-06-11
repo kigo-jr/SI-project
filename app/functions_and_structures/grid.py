@@ -1,6 +1,6 @@
 from typing import List
-from app.functions_and_structures.position import Position
-from app.functions_and_structures.node import Node
+from app.functions_and_structures import Position
+from app.functions_and_structures import Node
 
 
 class Grid:
@@ -45,7 +45,8 @@ class Grid:
             raise Exception(f"Height must be non-negative integer value!\nProvided value {height}")
 
     # TODO find neighbours who are not visited (node state)
-    def get_possible_moves(self, node):
+    def get_possible_moves(self, node: Node) -> List[Node]:
+
         pass
         # code from lab1 SI same as update_neighbours in main2.py
         # possible_movements = []

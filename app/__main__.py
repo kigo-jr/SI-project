@@ -1,6 +1,7 @@
 import pygame
 from pygame.surface import Surface
 from app.functions_and_structures.grid import Grid
+from app.functions_and_structures.window import Window
 
 if __name__ == "__main__":
 
@@ -11,14 +12,9 @@ if __name__ == "__main__":
     WIDTH, HEIGHT = 800, 600
 
     #  window initialization
-    window: Surface = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Search algorithms visualization")
 
-    run: bool = True
+    grid = Grid()
 
-    #  main loop
-    while run:
-        # event handling
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
+    window = Window(grid)
+    window.draw()
+    window.main_loop()

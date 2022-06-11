@@ -1,4 +1,5 @@
-from app.functions_and_structures.position import Position
+from typing import Tuple
+from app.functions_and_structures import Position
 
 
 class Node:
@@ -6,6 +7,19 @@ class Node:
     A class representing a node for A* algorithm\n
     `position` - cartesian representation of node's position (type: `Position`)
     """
+
+    colours = {
+        "white": (255, 255, 255),
+        "black": (0, 0, 0),
+        "red": (255, 0, 0),
+        "green": (0, 255, 0),
+        "blue": (0, 0, 255),
+        "yellow": (255, 255, 0),
+        "purple": (128, 0, 128),
+        "orange": (255, 168, 0),
+        "gray": (128, 128, 128),
+        "turquoise": (64, 224, 208)
+    }
 
     def __init__(self, position: Position = None):
         self._position = position
@@ -15,6 +29,7 @@ class Node:
         self.f = 0
 
         self.traversable = True  # FIXME don't know if it is the same as visited
+        self.is_barrier = False
         self.visited = False
         self.parent = None
         self.neighbours = []
@@ -71,6 +86,23 @@ class Node:
     @neighbours.setter
     def neighbours(self, neighbours):
         self.__neighbours = neighbours
+
+    @property
+    def x(self) -> int:
+        return self.position.x
+
+    @property
+    def y(self) -> int:
+        return self.position.y
+
+    @property
+    def colour(self) -> Tuple[int, int, int]:
+        if self.is_barrier:
+            return Node.colours["black"]
+        if self.visited:
+            return Node.colours["red"]
+        if self.traversable:
+            return Node.colours["white"]
 
     def __str__(self) -> str:
         return f"Node({self.position.x}, {self.position.y})"
