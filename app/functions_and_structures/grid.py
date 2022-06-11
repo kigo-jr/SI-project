@@ -2,8 +2,8 @@ from typing import List
 from app.functions_and_structures.position import Position
 from app.functions_and_structures.node import Node
 
-class Grid:
 
+class Grid:
     """
     Class representing the grid on which maze can be constructed.
 
@@ -44,6 +44,17 @@ class Grid:
         else:
             raise Exception(f"Height must be non-negative integer value!\nProvided value {height}")
 
+    # TODO find neighbours who are not visited (node state)
+    def get_possible_moves(self, node):
+        pass
+
+
+def path_from(self, node):
+    path = [node]
+    while node.parent is not None:
+        node = node.parent
+        path.append(node)
+    return path
 
 
 def make_grid(width=10, height=10):
@@ -52,6 +63,3 @@ def make_grid(width=10, height=10):
         grid.append([])
         for j in range(width):
             grid[i].append(Node(Position(j, i)))
-
-
-

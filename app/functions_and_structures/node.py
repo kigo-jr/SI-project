@@ -14,7 +14,9 @@ class Node:
         self.h = 0
         self.f = 0
 
-        self.traversable = True
+        self.traversable = True  # FIXME don't know if it is the same as visited
+        self.visited = False
+        self.parent = None
         self.neighbours = []
 
     def __eq__(self, __o: object) -> bool:
