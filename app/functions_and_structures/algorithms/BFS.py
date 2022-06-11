@@ -12,7 +12,7 @@ def search(start, end):
         for child in children:
             if not child.visited:
                 child.parent = node
-                child.visited = True
+                child.visited = True  # Might be wrong
                 q.append(child)
                 if child == end:
                     return path_from(node)
