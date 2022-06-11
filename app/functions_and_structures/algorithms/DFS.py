@@ -6,7 +6,12 @@ def search(start, end):
     q = [start_node]
     start_node.visited = True
     while len(q) > 0:
-        node = q.pop(0)
+        node = q.pop(-1)
+        node.visited = True
+
+        if node == end:
+            return path_from(node)
+
         # TODO get possible moves function in grid
         children = Grid.get_possible_moves(node)
         for child in children:
@@ -14,6 +19,4 @@ def search(start, end):
                 child.parent = node
                 child.visited = True
                 q.append(child)
-                # TODO
-                if child == end:
-                    return path_from(node)
+    return None
