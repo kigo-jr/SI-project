@@ -30,7 +30,7 @@ def a_star(window, grid):
             reconstruct_path(came_from, end, window, start, end)
             return True
 
-        for neighbour in current.neighbours:
+        for neighbour in grid.get_possible_moves(current):
             temp_g_score = g_score[current] + 1
             if temp_g_score < g_score[neighbour]:
                 came_from[neighbour] = current
@@ -50,7 +50,7 @@ def a_star(window, grid):
 
 def h(start: Node = None, end: Node = None) -> int:
     if start and end:
-        return abs(start.x - end.x) + abs(start.y + end.y)
+        return abs(start.x - end.x) + abs(start.y - end.y)
     return None
 
 

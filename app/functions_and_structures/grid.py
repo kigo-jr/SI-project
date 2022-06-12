@@ -128,7 +128,11 @@ class Grid:
 
     # TODO find neighbours who are not visited (node state)
     def get_possible_moves(self, node: Node) -> List[Node]:
-
+        possible_moves = []
+        for neighbour in node.neighbours:
+            if neighbour.open or neighbour.traversable:
+                possible_moves.append(neighbour)
+        return possible_moves
 
         pass
         # code from lab1 SI same as update_neighbours in main2.py
