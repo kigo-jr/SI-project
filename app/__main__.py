@@ -8,6 +8,6 @@ if __name__ == "__main__":
     #  init SDL
     pygame.init()
 
-    grid = Grid(40, 30)
+    grid = Grid(80, 60)
     window = Window(grid)
     window.main_loop()

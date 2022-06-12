@@ -1,3 +1,4 @@
+from hashlib import new
 from operator import le
 from typing import List
 from app.functions_and_structures import Position
@@ -96,6 +97,34 @@ class Grid:
         for row in self.grid:
             for node in row:
                 node.init_neighbours(self.grid)
+
+    def save(self, path: str) -> None:
+        with open(path, "w") as f:
+            for row in self.grid:
+                line = ""
+                for node in row:
+                    line += node.symbol
+                line += "\n"
+                f.write(line)
+
+    def load(self, path: str) -> None:
+        with open(path, "r") as f:
+            new_grid = []
+            for y_index, line in enumerate(f.readlines()):
+                new_row = []
+                for x_index, char in enumerate(line):
+                    new_row.append(Node(Position(x_index, y_index)))
+                    if char == "@":
+                        new_row[x_index].barrier = True
+                    elif char == "S":
+                        new_row[x_index].start = True
+                    elif char == "E":
+                        new_row[x_index].end = True
+                new_grid.append(new_row)
+        self.grid = new_grid
+
+
+
 
     # TODO find neighbours who are not visited (node state)
     def get_possible_moves(self, node: Node) -> List[Node]:

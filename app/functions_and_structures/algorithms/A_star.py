@@ -42,7 +42,6 @@ def a_star(window, grid):
                     open_set_hash.add(neighbour)
                     if neighbour != start and neighbour != end:
                         neighbour.open = True
-            # sleep(0.01)
             window.draw()
 
         if current != start and current != end:

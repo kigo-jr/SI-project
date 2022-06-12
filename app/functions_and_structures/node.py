@@ -34,12 +34,6 @@ class Node:
         self.f = 0
 
         self.traversable = True  # FIXME don't know if it is the same as visited
-        self.barrier = False
-        self.open = False
-        self.closed = False
-        self.path = False
-        self.start = False
-        self.end = False
         self.parent = None
         self.neighbours = []
 
@@ -90,7 +84,12 @@ class Node:
     @barrier.setter
     def barrier(self, barrier: bool) -> None:
         self.__barrier = barrier
-        self.traversable = not barrier
+        self.__traversable = not barrier
+        self.__open = not barrier
+        self.__closed = not barrier
+        self.__start = not barrier
+        self.__end = not barrier
+        self.__path = not barrier
 
     @property
     def closed(self) -> bool:
@@ -99,8 +98,12 @@ class Node:
     @closed.setter
     def closed(self, closed: bool) -> None:
         self.__closed = closed
-        if closed:
-            self.open = False
+        self.__traversable = not closed
+        self.__open = not closed
+        self.__barrier = not closed
+        self.__start = not closed
+        self.__end = not closed
+        self.__path = not closed
 
     @property
     def open(self) -> bool:
@@ -109,8 +112,12 @@ class Node:
     @open.setter
     def open(self, open: bool) -> None:
         self.__open = open
-        if open:
-            self.closed = False
+        self.__traversable = not open
+        self.__closed = not open
+        self.__barrier = not open
+        self.__start = not open
+        self.__end = not open
+        self.__path = not open
 
     @property
     def path(self) -> bool:
@@ -119,6 +126,12 @@ class Node:
     @path.setter
     def path(self, path: bool) -> None:
         self.__path = path
+        self.__traversable = not path
+        self.__closed = not path
+        self.__barrier = not path
+        self.__start = not path
+        self.__end = not path
+        self.__open = not path
 
     @property
     def start(self) -> bool:
@@ -126,9 +139,13 @@ class Node:
 
     @start.setter
     def start(self, start: bool) -> None:
-        if self.barrier:
-            return
         self.__start = start
+        self.__traversable = not start
+        self.__closed = not start
+        self.__barrier = not start
+        self.__path = not start
+        self.__end = not start
+        self.__open = not start
 
     @property
     def end(self) -> bool:
@@ -136,17 +153,27 @@ class Node:
 
     @end.setter
     def end(self, end: bool) -> None:
-        if self.barrier:
-            return
         self.__end = end
+        self.__traversable = not end
+        self.__closed = not end
+        self.__barrier = not end
+        self.__path = not end
+        self.__start = not end
+        self.__open = not end
 
     @property
     def traversable(self) -> bool:
-        return self.__traversable
+        return self.__traversable or self.end or self.start
 
     @traversable.setter
     def traversable(self, traversable: bool) -> None:
         self.__traversable = traversable
+        self.__end = not traversable
+        self.__closed = not traversable
+        self.__barrier = not traversable
+        self.__path = not traversable
+        self.__start = not traversable
+        self.__open = not traversable
 
     @property
     def neighbours(self):
@@ -181,6 +208,23 @@ class Node:
         if self.traversable:
             return Node.colours["white"]
 
+    @property
+    def symbol(self) -> str:
+        if self.start:
+            return "S"
+        if self.end:
+            return "E"
+        if self.path:
+            return "*"
+        if self.closed:
+            return "^"
+        if self.open:
+            return "%"
+        if self.barrier:
+            return "@"
+        if self.traversable:
+            return " "
+
     def __str__(self) -> str:
         return f"Node({self.x}, {self.y})"
 
@@ -206,9 +250,4 @@ class Node:
             self.neighbours.append(grid[self.y][self.x - 1])
 
     def reset(self) -> None:
-        self.barrier = False
-        self.closed = False
-        self.open = False
-        self.start = False
-        self.end = False
         self.traversable = True

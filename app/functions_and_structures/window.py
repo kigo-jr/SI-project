@@ -192,10 +192,8 @@ class Window:
                         pass
                     elif not self.grid.has_start and not self.grid.grid[row][col].end:
                         self.grid.grid[row][col].start = True
-                        self.grid.grid[row][col].barrier = False
                     elif not self.grid.has_end and not self.grid.grid[row][col].start:
                         self.grid.grid[row][col].end = True
-                        self.grid.grid[row][col].barrier = False
                     elif not self.grid.grid[row][col].barrier and not self.grid.grid[row][col].start and not self.grid.grid[row][col].end:
                         self.grid.grid[row][col].barrier = True
 
@@ -205,9 +203,7 @@ class Window:
                     if row is None and col is None:
                         pass
                     else:
-                        self.grid.grid[row][col].end = False
-                        self.grid.grid[row][col].start = False
-                        self.grid.grid[row][col].barrier = False
+                        self.grid.grid[row][col].traversable = True
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE and self.grid.has_start and self.grid.has_end:
@@ -224,6 +220,12 @@ class Window:
                     # TODO: implement changing an algorithm
                     if event.key == pygame.K_r:
                         self.grid.reset()
+                    if event.key == pygame.K_s:
+                        path = input("please enter path to save the maze: ")
+                        self.grid.save(path)
+                    if event.key == pygame.K_l:
+                        path = input("please enter path to load the maze: ")
+                        self.grid.load(path)
                     if event.key == pygame.K_LEFTBRACKET:
                         self.set_previous_algorithm()
                     if event.key == pygame.K_RIGHTBRACKET:
