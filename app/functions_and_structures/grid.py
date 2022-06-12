@@ -1,3 +1,4 @@
+from operator import le
 from typing import List
 from app.functions_and_structures import Position
 from app.functions_and_structures import Node
@@ -13,6 +14,12 @@ class Grid:
         self.width = width
         self.height = height
         self.grid = [[Node(Position(i, j)) for i in range(width)] for j in range(height)]
+        for i in range(self.height):
+            self.grid[i][0].barrier = True
+            self.grid[i][self.width - 1].barrier = True
+        for i in range(self.width):
+            self.grid[0][i].barrier = True
+            self.grid[self.height - 1][i].barrier = True
 
     @property
     def grid(self) -> List[List[Node]]:
@@ -43,6 +50,22 @@ class Grid:
             self.__height = height
         else:
             raise Exception(f"Height must be non-negative integer value!\nProvided value {height}")
+
+    @property
+    def has_start(self) -> bool:
+        for row in self.grid:
+            for node in row:
+                if node.start:
+                    return True
+        return False
+
+    @property
+    def has_end(self) -> bool:
+        for row in self.grid:
+            for node in row:
+                if node.end:
+                    return True
+        return False
 
     # TODO find neighbours who are not visited (node state)
     def get_possible_moves(self, node: Node) -> List[Node]:

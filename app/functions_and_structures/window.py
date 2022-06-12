@@ -1,5 +1,3 @@
-from cmath import exp
-from telnetlib import RCP
 from typing import Tuple
 from pygame.surface import Surface
 from pygame.rect import Rect
@@ -21,12 +19,16 @@ class Window:
         "turquoise": (64, 224, 208)
     }
 
-    def __init__(self, grid: Grid, width: int = 800, height: int = 600, grid_width: float = .7) -> None:
+    algorithms = ["DFS", "BSF", "DIJKSTRA", "A_START"]
+
+    def __init__(self, grid: Grid, width: int = 800, height: int = 600, grid_width: float = .8) -> None:
         self.grid_width = grid_width
         self.width = width
         self.height = height
         self.grid = grid
         self.surface = pygame.display.set_mode((self.width, self.height))
+        self.algorithm = Window.algorithms[0]
+
 
     @property
     def width(self) -> int:
@@ -90,6 +92,24 @@ class Window:
             raise Exception(f"Surface must be of type Surface!\nProvided value of type {type(surface)}.")
 
     @property
+    def algorithm(self) -> str:
+        return self.__algorithm
+
+    @algorithm.setter
+    def algorithm(self, algorithm: str) -> None:
+        self.__algorithm = algorithm
+
+    def set_next_algorithm(self) -> None:
+        algorithm_index = Window.algorithms.index(self.algorithm)
+        self.algorithm = Window.algorithms[(algorithm_index + 1) % len(Window.algorithms)]
+        return
+
+    def set_previous_algorithm(self) -> None:
+        algorithm_index = Window.algorithms.index(self.algorithm)
+        self.algorithm = Window.algorithms[(algorithm_index - 1) % len(Window.algorithms)]
+        return
+
+    @property
     def cell_size(self) -> Tuple[int, int]:
         cell_width: int = self.render_grid_width // self.grid.width
         cell_height: int = self.height // self.grid.height
@@ -108,9 +128,35 @@ class Window:
     def node_position_to_rectangle(self, x: int, y: int) -> Rect:
         return Rect(x * self.cell_size[0], y * self.cell_size[1], self.cell_size[0], self.cell_size[1])
 
+    def get_grid_position(self, pos) -> Tuple[int, int]:
+        x, y = pos
+        cell_width, cell_height = self.cell_size
+        col = x // cell_width
+        row = y // cell_height
+        if col >= self.grid.width:
+            return (None, None)
+        else:
+            return row, col
+
+
     def draw(self):
+        # area for grid and toolbox
+        self.surface.fill(Window.colours["white"])
         self.surface.fill(Window.colours["white"], Rect(0, 0, self.render_grid_width, self.height))
         self.surface.fill(Window.colours["gray"], Rect(self.render_grid_width, 0, self.render_toolbox_width, self.height))
+
+        font = pygame.font.SysFont(None, 20)
+        img = font.render("toolbox", True, Window.colours["black"])
+        self.surface.blit(img, (self.render_grid_width + 5, 45))
+        img = font.render("start", True, Window.colours["green" if self.grid.has_start else "red"])
+        self.surface.blit(img, (self.render_grid_width + 5, 65))
+        img = font.render("end", True, Window.colours["green" if self.grid.has_end else "red"])
+        self.surface.blit(img, (self.render_grid_width + 5, 85))
+        img = font.render("change algorithm: ([,])", True, Window.colours["black"])
+        self.surface.blit(img, (self.render_grid_width + 5, 105))
+        img = font.render(self.algorithm, True, Window.colours["purple"])
+        self.surface.blit(img, (self.render_grid_width + 5, 125))
+
         for y in range(self.grid.height):
             for x in range(self.grid.width):
                 pygame.draw.rect(self.surface, self.grid.grid[y][x].colour,
@@ -129,6 +175,39 @@ class Window:
 
         run: bool = True
         while run:
+            self.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                if pygame.mouse.get_pressed()[0]:
+                    pos = pygame.mouse.get_pos()
+                    row, col = self.get_grid_position(pos)
+                    if row is None and col is None:
+                        pass
+                    elif not self.grid.has_start and not self.grid.grid[row][col].end:
+                        self.grid.grid[row][col].start = True
+                    elif not self.grid.has_end and not self.grid.grid[row][col].start:
+                        self.grid.grid[row][col].end = True
+                    else:
+                        self.grid.grid[row][col].barrier = True
+
+                if pygame.mouse.get_pressed()[2]:
+                    pos = pygame.mouse.get_pos()
+                    row, col = self.get_grid_position(pos)
+                    if row is None and col is None:
+                        pass
+                    else:
+                        self.grid.grid[row][col].end = False
+                        self.grid.grid[row][col].start = False
+                        self.grid.grid[row][col].barrier = False
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE and self.grid.has_start and self.grid.has_end:
+                        # TODO: implement running an algorithm
+                        pass
+                    # TODO: implement changing an algorithm
+                    if event.key == pygame.K_LEFTBRACKET:
+                        self.set_previous_algorithm()
+                    if event.key == pygame.K_RIGHTBRACKET:
+                        self.set_next_algorithm()
+

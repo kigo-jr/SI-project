@@ -22,15 +22,19 @@ class Node:
     }
 
     def __init__(self, position: Position = None):
-        self._position = position
+        self.position = position
 
         self.g = 0
         self.h = 0
         self.f = 0
 
         self.traversable = True  # FIXME don't know if it is the same as visited
-        self.is_barrier = False
-        self.visited = False
+        self.barrier = False
+        self.open = False
+        self.closed = False
+        self.path = False
+        self.start = False
+        self.end = False
         self.parent = None
         self.neighbours = []
 
@@ -57,26 +61,83 @@ class Node:
 
     @property
     def f(self):
-        return self._f
+        return self.__f
 
     @f.setter
     def f(self, f):
         self.__f = f
 
     @property
-    def position(self):
-        return self._position
+    def position(self) -> Position:
+        return self.__position
 
     @position.setter
-    def position(self, position):
-        self._position = position
+    def position(self, position) -> None:
+        self.__position = position
 
     @property
-    def traversable(self):
+    def barrier(self) -> bool:
+        return self.__barrier
+
+    @barrier.setter
+    def barrier(self, barrier: bool) -> None:
+        self.__barrier = barrier
+        self.traversable = not barrier
+
+    @property
+    def closed(self) -> bool:
+        return self.__closed
+
+    @closed.setter
+    def closed(self, closed: bool) -> None:
+        self.__closed = closed
+        if closed:
+            self.open = False
+
+    @property
+    def open(self) -> bool:
+        return self.__open
+
+    @open.setter
+    def open(self, open: bool) -> None:
+        self.__open = open
+        if open:
+            self.closed = False
+
+    @property
+    def path(self) -> bool:
+        return self.__path
+
+    @path.setter
+    def path(self, path: bool) -> None:
+        self.__path = path
+
+    @property
+    def start(self) -> bool:
+        return self.__start
+
+    @start.setter
+    def start(self, start: bool) -> None:
+        if self.barrier:
+            return
+        self.__start = start
+
+    @property
+    def end(self) -> bool:
+        return self.__end
+
+    @end.setter
+    def end(self, end: bool) -> None:
+        if self.barrier:
+            return
+        self.__end = end
+
+    @property
+    def traversable(self) -> bool:
         return self.__traversable
 
     @traversable.setter
-    def traversable(self, traversable: bool = True):
+    def traversable(self, traversable: bool) -> None:
         self.__traversable = traversable
 
     @property
@@ -84,7 +145,7 @@ class Node:
         return self.__neighbours
 
     @neighbours.setter
-    def neighbours(self, neighbours):
+    def neighbours(self, neighbours) -> None:
         self.__neighbours = neighbours
 
     @property
@@ -97,10 +158,18 @@ class Node:
 
     @property
     def colour(self) -> Tuple[int, int, int]:
-        if self.is_barrier:
-            return Node.colours["black"]
-        if self.visited:
+        if self.start:
+            return Node.colours["orange"]
+        if self.end:
+            return Node.colours["turquoise"]
+        if self.path:
+            return Node.colours["purple"]
+        if self.closed:
             return Node.colours["red"]
+        if self.open:
+            return Node.colours["green"]
+        if self.barrier:
+            return Node.colours["black"]
         if self.traversable:
             return Node.colours["white"]
 
@@ -110,7 +179,7 @@ class Node:
     def __repr__(self) -> str:
         return f"Node(Position({self.position.x}, {self.position.y}))"
 
-    def init_neighbours(self, grid):
+    def init_neighbours(self, grid) -> None:
         self.neigbours = []
         height = len(grid)
         width = 0

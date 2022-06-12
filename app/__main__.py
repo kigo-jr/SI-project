@@ -8,13 +8,6 @@ if __name__ == "__main__":
     #  init SDL
     pygame.init()
 
-    #  screen size
-    WIDTH, HEIGHT = 800, 600
-
-    #  window initialization
-
-    grid = Grid()
-
+    grid = Grid(20, 15)
     window = Window(grid)
-    window.draw()
     window.main_loop()
