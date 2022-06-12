@@ -1,7 +1,8 @@
 from app.functions_and_structures.grid import *
 
 
-def search(grid):
+def search(draw, grid):
+    draw()
     start = grid.start
     end = grid.end
     start_node = start
@@ -21,12 +22,13 @@ def search(grid):
                 if child.parent == None:
                     child.f = cost
                     child.parent = node
-                    child.visited = True  # Might be wrong
+                    child.closed = True  # Might be wrong
                     q.append(child)
                 elif cost < child.f:
                     child.f = cost
                     child.parent = node
 
         q.sort(key=lambda x: x.cost)
+        draw()
 
     return None

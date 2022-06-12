@@ -1,8 +1,13 @@
+import imp
 from typing import Tuple
 from pygame.surface import Surface
 from pygame.rect import Rect
 import pygame
 from app.functions_and_structures.grid import Grid
+from app.functions_and_structures.algorithms.A_star import a_star
+from app.functions_and_structures.algorithms.BFS import search as bfs
+from app.functions_and_structures.algorithms.DFS import search as dfs
+from app.functions_and_structures.algorithms.Dijkstra import search as dijkstra
 
 class Window:
 
@@ -19,7 +24,7 @@ class Window:
         "turquoise": (64, 224, 208)
     }
 
-    algorithms = ["DFS", "BSF", "DIJKSTRA", "A_START"]
+    algorithms = ["DFS", "BFS", "DIJKSTRA", "A_STAR"]
 
     def __init__(self, grid: Grid, width: int = 800, height: int = 600, grid_width: float = .8) -> None:
         self.grid_width = grid_width
@@ -27,6 +32,7 @@ class Window:
         self.height = height
         self.grid = grid
         self.surface = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption("SUS")
         self.algorithm = Window.algorithms[0]
 
 
@@ -205,8 +211,16 @@ class Window:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE and self.grid.has_start and self.grid.has_end:
-                        # TODO: implement running an algorithm
-                        pass
+                        self.grid.update_neighbours()
+                        if self.algorithm == "DFS":
+                            dfs(self, self.grid)
+                        elif self.algorithm == "BFS":
+                            bfs(self, self.grid)
+                        elif self.algorithm == "DIJKSTRA":
+                            dijkstra(self, self.grid)
+                        elif self.algorithm == "A_STAR":
+                            a_star(self, self.grid)
+
                     # TODO: implement changing an algorithm
                     if event.key == pygame.K_r:
                         self.grid.reset()

@@ -48,6 +48,9 @@ class Node:
             return self.position == __o.position
         return False
 
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
     @property
     def g(self):
         return self.__g
@@ -179,13 +182,13 @@ class Node:
             return Node.colours["white"]
 
     def __str__(self) -> str:
-        return f"Node({self.position.x}, {self.position.y})"
+        return f"Node({self.x}, {self.y})"
 
     def __repr__(self) -> str:
-        return f"Node(Position({self.position.x}, {self.position.y}))"
+        return f"Node(Position({self.x}, {self.y}))"
 
     def init_neighbours(self, grid) -> None:
-        self.neigbours = []
+        self.neighbours = []
         height = len(grid)
         width = 0
         if height != 0:
@@ -193,8 +196,14 @@ class Node:
 
         if not (height != 0 and width != 0): return
 
-        if self.y < height - 1 and grid[self.position.y + 1][self.position.x].traversable:
-            self.neighbours.append(grid[self.position.y + 1][self.position.x])
+        if self.y < height - 1 and grid[self.y + 1][self.x].traversable:
+            self.neighbours.append(grid[self.y + 1][self.x])
+        if self.y > 0 and grid[self.y - 1][self.x].traversable:
+            self.neighbours.append(grid[self.y - 1][self.x])
+        if self.x < width - 1 and grid[self.y][self.x + 1].traversable:
+            self.neighbours.append(grid[self.y][self.x + 1])
+        if self.x > 0 and grid[self.y][self.x - 1].traversable:
+            self.neighbours.append(grid[self.y][self.x - 1])
 
     def reset(self) -> None:
         self.barrier = False

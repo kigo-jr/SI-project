@@ -21,6 +21,10 @@ class Grid:
             self.grid[0][i].barrier = True
             self.grid[self.height - 1][i].barrier = True
 
+        for row in self.grid:
+            for node in row:
+                node.init_neighbours(self.grid)
+
     @property
     def grid(self) -> List[List[Node]]:
         return self.__grid
@@ -88,8 +92,14 @@ class Grid:
             for node in row:
                 node.reset()
 
+    def update_neighbours(self) -> None:
+        for row in self.grid:
+            for node in row:
+                node.init_neighbours(self.grid)
+
     # TODO find neighbours who are not visited (node state)
     def get_possible_moves(self, node: Node) -> List[Node]:
+
 
         pass
         # code from lab1 SI same as update_neighbours in main2.py

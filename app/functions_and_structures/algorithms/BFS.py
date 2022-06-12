@@ -1,7 +1,8 @@
 from app.functions_and_structures.grid import *
 
 
-def search(grid):
+def search(draw, grid):
+    draw()
     start = grid.start
     end = grid.end
     start_node = start
@@ -18,4 +19,5 @@ def search(grid):
                 q.append(child)
                 if child == end:
                     return path_from(node)
+        draw()
     return None
