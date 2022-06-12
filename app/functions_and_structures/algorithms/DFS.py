@@ -32,14 +32,6 @@ def search(window, grid):
             node.closed = True
 
 
-def reconstruct_path(came_from, current, window, start, end):
-    while current in came_from:
-        current = came_from[current]
-        if current != start and current != end:
-            current.path = True
-        window.draw()
-
-
 def tesst(window, grid):
     window.draw()
     start = grid.start

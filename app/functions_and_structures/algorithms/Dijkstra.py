@@ -41,18 +41,8 @@ def search(window, grid):
 
             window.draw()
 
-
         if node != start and node != end:
             node.closed = True
-
-
-def reconstruct_path(came_from, current, window, start, end):
-    while current in came_from:
-        current = came_from[current]
-        if current != start and current != end:
-            current.path = True
-        window.draw()
-
 
 
 def test(draw, grid):

@@ -156,6 +156,13 @@ def path_from(self, node):
         path.append(node)
     return path
 
+def reconstruct_path(came_from, current, window, start, end):
+    while current and current != start in came_from:
+        current = came_from[current]
+        if current != start and current != end:
+            current.path = True
+        window.draw()
+
 
 def make_grid(width=10, height=10):
     grid = []
