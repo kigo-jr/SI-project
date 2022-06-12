@@ -1,6 +1,6 @@
 from queue import PriorityQueue
 from time import sleep
-from app.functions_and_structures.grid import *
+from app.functions_and_structures.grid import reconstruct_path
 from app.functions_and_structures.node import *
 import pygame
 
