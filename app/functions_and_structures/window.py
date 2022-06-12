@@ -186,9 +186,11 @@ class Window:
                         pass
                     elif not self.grid.has_start and not self.grid.grid[row][col].end:
                         self.grid.grid[row][col].start = True
+                        self.grid.grid[row][col].barrier = False
                     elif not self.grid.has_end and not self.grid.grid[row][col].start:
                         self.grid.grid[row][col].end = True
-                    else:
+                        self.grid.grid[row][col].barrier = False
+                    elif not self.grid.grid[row][col].barrier and not self.grid.grid[row][col].start and not self.grid.grid[row][col].end:
                         self.grid.grid[row][col].barrier = True
 
                 if pygame.mouse.get_pressed()[2]:
@@ -206,6 +208,8 @@ class Window:
                         # TODO: implement running an algorithm
                         pass
                     # TODO: implement changing an algorithm
+                    if event.key == pygame.K_r:
+                        self.grid.reset()
                     if event.key == pygame.K_LEFTBRACKET:
                         self.set_previous_algorithm()
                     if event.key == pygame.K_RIGHTBRACKET:

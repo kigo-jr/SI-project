@@ -2,7 +2,9 @@ from queue import PriorityQueue
 from app.functions_and_structures.node import *
 
 
-def a_star(grid, start, end):
+def a_star(grid):
+    start = grid.start
+    end = grid.end
     count = 0
     open_set = PriorityQueue()
     open_set.put((0, count, start))

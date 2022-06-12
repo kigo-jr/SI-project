@@ -1,5 +1,10 @@
+from enum import Enum
 from typing import Tuple
 from app.functions_and_structures import Position
+
+
+class Node_Types(Enum):
+    pass
 
 
 class Node:
@@ -190,3 +195,11 @@ class Node:
 
         if self.y < height - 1 and grid[self.position.y + 1][self.position.x].traversable:
             self.neighbours.append(grid[self.position.y + 1][self.position.x])
+
+    def reset(self) -> None:
+        self.barrier = False
+        self.closed = False
+        self.open = False
+        self.start = False
+        self.end = False
+        self.traversable = True

@@ -1,7 +1,9 @@
 from app.functions_and_structures.grid import *
 
 
-def search(start, end):
+def search(grid):
+    start = grid.start
+    end = grid.end
     start_node = start
     q = [start_node]
     start_node.visited = True

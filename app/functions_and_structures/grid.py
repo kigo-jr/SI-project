@@ -67,6 +67,27 @@ class Grid:
                     return True
         return False
 
+    @property
+    def start(self) -> Node:
+        for row in self.grid:
+            for node in row:
+                if node.start:
+                    return node
+        return None
+
+    @property
+    def end(self) -> Node:
+        for row in self.grid:
+            for node in row:
+                if node.end:
+                    return node
+        return None
+
+    def reset(self) -> None:
+        for row in self.grid:
+            for node in row:
+                node.reset()
+
     # TODO find neighbours who are not visited (node state)
     def get_possible_moves(self, node: Node) -> List[Node]:
 
