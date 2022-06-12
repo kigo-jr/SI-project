@@ -157,7 +157,7 @@ def path_from(self, node):
     return path
 
 def reconstruct_path(came_from, current, window, start, end):
-    while current and current != start in came_from:
+    while current in came_from  and current != start:
         current = came_from[current]
         if current != start and current != end:
             current.path = True
