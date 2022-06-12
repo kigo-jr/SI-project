@@ -33,7 +33,7 @@ class Node:
         self.h = 0
         self.f = 0
 
-        self.traversable = True  # FIXME don't know if it is the same as visited
+        self.traversable = True
         self.parent = None
         self.neighbours = []
 
