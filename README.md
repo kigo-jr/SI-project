@@ -19,5 +19,6 @@ python3 app
 
 ## Wybrane algorytmy
 - A*
-- Kremówka search
-- Tak ja pan Jezus powiedział
+- DFS
+- BFS
+- Dijkstra

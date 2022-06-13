@@ -93,6 +93,12 @@ class Grid:
             for node in row:
                 node.reset()
 
+    def clear(self) -> None:
+        for row in self.grid:
+            for node in row:
+                if not (node.barrier or node.start or node.end):
+                    node.traversable = True
+
     def update_neighbours(self) -> None:
         for row in self.grid:
             for node in row:
@@ -120,6 +126,8 @@ class Grid:
                         new_row[x_index].start = True
                     elif char == "E":
                         new_row[x_index].end = True
+                    elif char == "#":
+                        new_row[x_index].swamp = True
                 new_grid.append(new_row)
         self.grid = new_grid
 

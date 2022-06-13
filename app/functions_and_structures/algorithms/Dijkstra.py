@@ -28,7 +28,7 @@ def search(window, grid):
             return True
 
         for neighbour in grid.get_possible_moves(node):
-            temp_score = f_score[node] + 1
+            temp_score = f_score[node] + neighbour.cost
             if temp_score < f_score[neighbour]:
                 came_from[neighbour] = node
                 f_score[neighbour] = temp_score

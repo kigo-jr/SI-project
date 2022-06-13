@@ -26,7 +26,7 @@ class Window:
 
     algorithms = ["DFS", "BFS", "DIJKSTRA", "A_STAR"]
 
-    def __init__(self, grid: Grid, width: int = 800, height: int = 600, grid_width: float = .8) -> None:
+    def __init__(self, grid: Grid, width: int = 800, height: int = 600, grid_width: float = .7) -> None:
         self.grid_width = grid_width
         self.width = width
         self.height = height
@@ -139,7 +139,7 @@ class Window:
         cell_width, cell_height = self.cell_size
         col = x // cell_width
         row = y // cell_height
-        if col >= self.grid.width:
+        if col >= self.grid.width or row >= self.grid.height:
             return (None, None)
         else:
             return row, col
@@ -149,19 +149,26 @@ class Window:
         # area for grid and toolbox
         self.surface.fill(Window.colours["white"])
         self.surface.fill(Window.colours["white"], Rect(0, 0, self.render_grid_width, self.height))
-        self.surface.fill(Window.colours["gray"], Rect(self.render_grid_width, 0, self.render_toolbox_width, self.height))
+        self.surface.fill(Window.colours["gray"], Rect(self.render_grid_width, 0, self.render_toolbox_width + 5, self.height))
 
         font = pygame.font.SysFont(None, 20)
-        img = font.render("toolbox", True, Window.colours["black"])
+        img = font.render("Manual", True, Window.colours["black"])
+        self.surface.blit(img, (self.render_grid_width + 5, 25))
+        img = font.render("MB1: add start, end, barrier node", True, Window.colours["black"])
         self.surface.blit(img, (self.render_grid_width + 5, 45))
-        img = font.render("start", True, Window.colours["green" if self.grid.has_start else "red"])
+        img = font.render("MB2: add swamp node", True, Window.colours["black"])
         self.surface.blit(img, (self.render_grid_width + 5, 65))
-        img = font.render("end", True, Window.colours["green" if self.grid.has_end else "red"])
+        img = font.render("MB3: erase node", True, Window.colours["black"])
         self.surface.blit(img, (self.render_grid_width + 5, 85))
-        img = font.render("change algorithm: ([,])", True, Window.colours["black"])
-        self.surface.blit(img, (self.render_grid_width + 5, 105))
+
+        img = font.render("start set" if self.grid.has_start else "start not set", True, Window.colours["green" if self.grid.has_start else "red"])
+        self.surface.blit(img, (self.render_grid_width + 5, 145))
+        img = font.render("end set" if self.grid.has_end else "end not set", True, Window.colours["green" if self.grid.has_end else "red"])
+        self.surface.blit(img, (self.render_grid_width + 5, 165))
+        img = font.render("change algorithm: [,]", True, Window.colours["black"])
+        self.surface.blit(img, (self.render_grid_width + 5, 185))
         img = font.render(self.algorithm, True, Window.colours["purple"])
-        self.surface.blit(img, (self.render_grid_width + 5, 125))
+        self.surface.blit(img, (self.render_grid_width + 5, 205))
 
         for y in range(self.grid.height):
             for x in range(self.grid.width):
@@ -228,6 +235,8 @@ class Window:
                     # TODO: implement changing an algorithm
                     if event.key == pygame.K_r:
                         self.grid.reset()
+                    if event.key == pygame.K_c:
+                        self.grid.clear()
                     if event.key == pygame.K_s:
                         path = input("please enter path to save the maze: ")
                         self.grid.save(path)

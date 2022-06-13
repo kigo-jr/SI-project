@@ -8,6 +8,6 @@ if __name__ == "__main__":
     pygame.init()
     width = int(input("Enter width of the maze: "))
     height = int(input("Enter height of the maze: "))
-    grid = Grid(80, 60)
+    grid = Grid(width, height)
     window = Window(grid)
     window.main_loop()
