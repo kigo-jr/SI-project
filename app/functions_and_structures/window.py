@@ -197,6 +197,14 @@ class Window:
                     elif not self.grid.grid[row][col].barrier and not self.grid.grid[row][col].start and not self.grid.grid[row][col].end:
                         self.grid.grid[row][col].barrier = True
 
+                if pygame.mouse.get_pressed()[1]:
+                    pos = pygame.mouse.get_pos()
+                    row, col = self.get_grid_position(pos)
+                    if row is None and col is None:
+                        pass
+                    else:
+                        self.grid.grid[row][col].swamp = True
+
                 if pygame.mouse.get_pressed()[2]:
                     pos = pygame.mouse.get_pos()
                     row, col = self.get_grid_position(pos)

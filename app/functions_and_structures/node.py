@@ -23,7 +23,8 @@ class Node:
         "purple": (128, 0, 128),
         "orange": (255, 168, 0),
         "gray": (128, 128, 128),
-        "turquoise": (64, 224, 208)
+        "turquoise": (64, 224, 208),
+        "dark_green": (51, 84, 24)
     }
 
     def __init__(self, position: Position = None):
@@ -78,18 +79,36 @@ class Node:
         self.__position = position
 
     @property
+    def swamp(self) -> bool:
+        return self.__swamp
+
+    @swamp.setter
+    def swamp(self, swamp: bool) -> None:
+        if swamp:
+            self.__swamp = swamp
+            self.__barrier = not swamp
+            self.__traversable = not swamp
+            self.__open = not swamp
+            self.__closed = not swamp
+            self.__start = not swamp
+            self.__end = not swamp
+            self.__path = not swamp
+
+    @property
     def barrier(self) -> bool:
         return self.__barrier
 
     @barrier.setter
     def barrier(self, barrier: bool) -> None:
-        self.__barrier = barrier
-        self.__traversable = not barrier
-        self.__open = not barrier
-        self.__closed = not barrier
-        self.__start = not barrier
-        self.__end = not barrier
-        self.__path = not barrier
+        if barrier:
+            self.__barrier = barrier
+            self.__traversable = not barrier
+            self.__open = not barrier
+            self.__closed = not barrier
+            self.__start = not barrier
+            self.__end = not barrier
+            self.__path = not barrier
+            self.__swamp = not barrier
 
     @property
     def closed(self) -> bool:
@@ -97,13 +116,15 @@ class Node:
 
     @closed.setter
     def closed(self, closed: bool) -> None:
-        self.__closed = closed
-        self.__traversable = not closed
-        self.__open = not closed
-        self.__barrier = not closed
-        self.__start = not closed
-        self.__end = not closed
-        self.__path = not closed
+        if closed:
+            self.__closed = closed
+            self.__traversable = not closed
+            self.__open = not closed
+            self.__barrier = not closed
+            self.__start = not closed
+            self.__end = not closed
+            self.__path = not closed
+            self.__swamp = not closed
 
     @property
     def open(self) -> bool:
@@ -111,13 +132,15 @@ class Node:
 
     @open.setter
     def open(self, open: bool) -> None:
-        self.__open = open
-        self.__traversable = not open
-        self.__closed = not open
-        self.__barrier = not open
-        self.__start = not open
-        self.__end = not open
-        self.__path = not open
+        if open:
+            self.__open = open
+            self.__traversable = not open
+            self.__closed = not open
+            self.__barrier = not open
+            self.__start = not open
+            self.__end = not open
+            self.__path = not open
+            self.__swamp = not open
 
     @property
     def path(self) -> bool:
@@ -125,13 +148,15 @@ class Node:
 
     @path.setter
     def path(self, path: bool) -> None:
-        self.__path = path
-        self.__traversable = not path
-        self.__closed = not path
-        self.__barrier = not path
-        self.__start = not path
-        self.__end = not path
-        self.__open = not path
+        if path:
+            self.__path = path
+            self.__traversable = not path
+            self.__closed = not path
+            self.__barrier = not path
+            self.__start = not path
+            self.__end = not path
+            self.__open = not path
+            self.__swamp = not path
 
     @property
     def start(self) -> bool:
@@ -139,13 +164,15 @@ class Node:
 
     @start.setter
     def start(self, start: bool) -> None:
-        self.__start = start
-        self.__traversable = not start
-        self.__closed = not start
-        self.__barrier = not start
-        self.__path = not start
-        self.__end = not start
-        self.__open = not start
+        if start:
+            self.__start = start
+            self.__traversable = not start
+            self.__closed = not start
+            self.__barrier = not start
+            self.__path = not start
+            self.__end = not start
+            self.__open = not start
+            self.__swamp = not start
 
     @property
     def end(self) -> bool:
@@ -153,17 +180,23 @@ class Node:
 
     @end.setter
     def end(self, end: bool) -> None:
-        self.__end = end
-        self.__traversable = not end
-        self.__closed = not end
-        self.__barrier = not end
-        self.__path = not end
-        self.__start = not end
-        self.__open = not end
+        if end:
+            self.__end = end
+            self.__traversable = not end
+            self.__closed = not end
+            self.__barrier = not end
+            self.__path = not end
+            self.__start = not end
+            self.__open = not end
+            self.__swamp = not end
 
     @property
     def traversable(self) -> bool:
-        return self.__traversable or self.end or self.start
+        return self.__traversable or self.end or self.start or self.swamp
+
+    @property
+    def cost(self) -> int:
+        return 5 if self.swamp else 1
 
     @traversable.setter
     def traversable(self, traversable: bool) -> None:
@@ -174,6 +207,7 @@ class Node:
         self.__path = not traversable
         self.__start = not traversable
         self.__open = not traversable
+        self.__swamp = not traversable
 
     @property
     def neighbours(self):
@@ -205,6 +239,8 @@ class Node:
             return Node.colours["green"]
         if self.barrier:
             return Node.colours["black"]
+        if self.swamp:
+            return Node.colours["dark_green"]
         if self.traversable:
             return Node.colours["white"]
 
@@ -212,16 +248,18 @@ class Node:
     def symbol(self) -> str:
         if self.start:
             return "S"
-        if self.end:
+        elif self.end:
             return "E"
-        if self.path:
+        elif self.path:
             return "*"
-        if self.closed:
+        elif self.closed:
             return "^"
-        if self.open:
+        elif self.open:
             return "%"
-        if self.barrier:
+        elif self.barrier:
             return "@"
+        elif self.swamp:
+            return "#"
         if self.traversable:
             return " "
 

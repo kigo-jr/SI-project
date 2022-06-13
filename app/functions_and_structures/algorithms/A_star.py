@@ -32,7 +32,7 @@ def a_star(window, grid):
             return True
 
         for neighbour in grid.get_possible_moves(current):
-            temp_g_score = g_score[current] + 1
+            temp_g_score = g_score[current] + neighbour.cost
             if temp_g_score < g_score[neighbour]:
                 came_from[neighbour] = current
                 g_score[neighbour] = temp_g_score

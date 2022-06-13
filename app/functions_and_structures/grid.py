@@ -134,20 +134,6 @@ class Grid:
                 possible_moves.append(neighbour)
         return possible_moves
 
-        pass
-        # code from lab1 SI same as update_neighbours in main2.py
-        # possible_movements = []
-        # if node.y - 1 >= 0 and self.maze[node.y - 1][node.x].type != '#':  # north
-        #     possible_movements.append(self.maze[node.y - 1][node.x])
-        # if node.x + 1 < len(self.maze[node.y]) and self.maze[node.y][node.x + 1].type != '#':  # east
-        #     possible_movements.append(self.maze[node.y][node.x + 1])
-        # if node.y + 1 < len(self.maze) and self.maze[node.y + 1][node.x].type != '#':  # south
-        #     possible_movements.append(self.maze[node.y + 1][node.x])
-        # if node.x - 1 >= 0 and self.maze[node.y][node.x - 1].type != '#':  # west
-        #     possible_movements.append(self.maze[node.y][node.x - 1])
-        #
-        # return possible_movements
-
 
 def path_from(self, node):
     path = [node]
